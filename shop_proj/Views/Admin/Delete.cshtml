@@ -1,0 +1,27 @@
+﻿@model shop_proj.Models.Tovar
+@{
+    ViewBag.Title = "Видалення товару";
+}
+<h2>@ViewBag.Title</h2>
+<div>
+    <div>
+        <h3>Назва</h3>
+        <h4>
+            @Html.DisplayFor(model => model.Name)
+        </h4>
+        <h3>Модель</h3>
+        <h4>
+        </h4>
+        <h3>Ціна</h3>
+        <h4>
+            @Html.DisplayFor(model => model.Price)
+        </h4>
+    </div>
+    <div>
+        <form asp-controller="Admin" asp-action="Delete" method="post">
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" value="Видалити" />
+            </div>
+        </form>
+    </div>
+</div>

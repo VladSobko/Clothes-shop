@@ -1,0 +1,202 @@
+﻿@model shop_proj.VModels.IndexModel
+@{
+    ViewBag.Title = "";
+    Layout = "_Layout1";
+    int t = 1;
+    int c = 1;
+}
+<style>
+    @@font-face {
+        font-family: 'FontAwesome';
+        src: url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2') format('woff2'), url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff') format('woff'), url('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/fonts/fontawesome-webfont.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal
+    }
+
+    .glyphicon {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale
+    }
+
+    .glyphicon-chevron-right:before {
+        content: "\f054";
+    }
+
+    .glyphicon-chevron-left:before {
+        content: "\f053";
+    }
+</style>
+<nav class="navbar navbar-light  justify-content-between" >
+    <form class="form-inline ml-auto mt-2 mt-md-0" asp-controller="User" asp-action="Index" >
+        <input class="form-control mr-sm-2" type="text" placeholder="Пошук" aria-label="Search" id="Search" name="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Пошук</button>
+    </form>
+    
+</nav>
+<nav class="navbar navbar-expand-lg navbar-dark  ">
+  
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto sidenav" id="navAccordion">
+            @foreach (var sex in ViewBag.Genders)
+            {
+                
+                string k = "collapseSubItem" + t.ToString();
+                string k1= "#collapseSubItem" + t.ToString();
+                <li class="nav-item"  >
+                    <a class="nav-link nav-link-collapse sex"
+                       
+                       href="#"
+                       id="@sex.Id"
+                       data-toggle="collapse"
+                       data-target=@k1
+                       aria-controls=@k
+                       aria-expanded="false">@sex.Name</a>
+                    <ul class="nav-second-level collapse" id=@k data-parent="#navAccordion">
+                        @foreach (var item in sex.Categories)
+                        {
+
+                            string k2 = "collapseSubItems" + c.ToString();
+                            string k3 = "#collapseSubItems" + c.ToString();
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-collapse1 category"
+                                   href="#"
+                                   id="@item.Id"
+                                   data-toggle="collapse"
+                                   data-target=@k3
+                                   aria-controls=@k2
+                                   aria-expanded="false">@item.Name</a>
+                                <ul class="nav-third-level collapse" id=@k2 >
+                                    @foreach (var mod in item.Modells)
+                                    {
+                                        <li class="nav-item ">
+                                            <a class="nav-link modell" href="#" id="@mod.Id">
+                                                <span class="nav-link-text">@mod.Name</span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                </ul>
+                            </li>
+
+                            c += 1;
+                        }
+
+                    </ul>
+                </li>
+
+          t+=1;  }
+
+
+        </ul>
+       
+    </div>
+</nav>
+
+<main class="content-wrapper " id="mainn" style="margin-top:20px;">
+    <div class="container-fluid row">
+        
+
+            @foreach (var item in Model.Tovars)
+            {
+
+
+
+                <div class="col-12 col-lg-4 col-md-3 col-xl-3 col-sm-6  tovar">
+                    @foreach (var kind in item.Kinds)
+                    {
+
+                        @foreach (var image in kind.Images)
+                        {
+                            <div class="holder">
+                                <img src="@image.Path" alt="Sample Image" />
+                                <a asp-action="Tovarind" asp-controller="User" asp-route-id="@item.Id" class="block"><h6 class="txt1">Переглянути</h6></a>
+
+                            </div>
+                            break;
+
+                        }
+                        break;
+                    }
+                    <h6>@item.Modell.Category.Name-@item.Modell.Name</h6>
+                    <h6> Ціна @item.Price грн.</h6>
+                </div>
+
+            }
+
+        
+
+    </div>
+    @if (Model.PageModel.HasPreviousPage)
+    {
+        <a asp-action="Index"
+           asp-route-page="@(Model.PageModel.PageNumber - 1)"
+           class="btn btn-outline-dark">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Назад
+        </a>
+    }
+    @if (Model.PageModel.HasNextPage)
+    {
+        <a asp-action="Index"
+           asp-route-page="@(Model.PageModel.PageNumber + 1)"
+           class="btn btn-outline-dark">
+            Вперед
+            <i class="glyphicon glyphicon-chevron-right"></i>
+        </a>
+    }
+</main>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.nav-link-collapse').on('click', function () {
+                $('.nav-link-collapse').not(this).removeClass('nav-link-show');
+                $(this).toggleClass('nav-link-show');
+            });
+            $('.nav-link-collapse1').on('click', function () {
+                $('.nav-link-collapse1').not(this).removeClass('nav-link-show');
+                $(this).toggleClass('nav-link-show');
+            });
+
+            $('.sex').bind('click', function () {
+                var id = $(this).attr('id');
+            
+                $.ajax({
+                    type: 'GET',
+                    url:'@Url.Action("GetTovars")/' + id,
+                    success: function (data) {
+                        $('#mainn').replaceWith(data);
+                    }
+                });
+            });
+            $('.category').bind('click', function () {
+                var id = $(this).attr('id');
+              
+                  $.ajax({
+                    type: 'GET',
+                    url:'@Url.Action("GetTovarsCat")/' + id,
+                    success: function (data) {
+                        $('#mainn').replaceWith(data);
+                    }
+                });
+            });
+            $('.modell').bind('click', function () {
+                var id = $(this).attr('id');
+                
+                 $.ajax({
+                    type: 'GET',
+                    url:'@Url.Action("GetTovarsMod")/' + id,
+                    success: function (data) {
+                        $('#mainn').replaceWith(data);
+                    }
+                });
+            });
+
+    })
+    </script>
+}

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<shop_proj.Models.Category>
+@{
+    ViewBag.Title = "Всі категорії";
+}
+<h2>@ViewBag.Title</h2>
+
+<table class="table" id="cl2">
+    <tr class="cl3"><td>№</td><td>Категорія</td><td>Стать</td><td></td><td></td></tr>
+    @foreach (var item in Model)
+    {
+
+<tr>
+    <td>@item.Id</td>
+    <td>@item.Name</td>
+    <td>@item.Sex.Name</td>
+    <td><a asp-action="EditCategory" asp-controller="Admin" asp-route-id="@item.Id">Редагувати</a> </td>
+    <td> <a asp-action="DeleteCategory" asp-controller="Admin" asp-route-id="@item.Id">Видалити</a></td>
+
+
+
+</tr>
+    }
+
+</table>
+<td><a asp-action="Addcategory" asp-controller="Admin">Додати</a> </td>

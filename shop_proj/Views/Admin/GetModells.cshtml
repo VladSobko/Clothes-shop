@@ -1,0 +1,7 @@
+﻿@model shop_proj.Models.Tovar
+
+<select asp-for="ModellId" id="modells" class="form-control" asp-items="@(new SelectList(ViewBag.Modell, "Id","Name"))"></select>
+
+
+
+

@@ -1,0 +1,143 @@
+﻿@model shop_proj.VModels.KorzynaOrder
+@{
+    ViewBag.Title = "";
+}
+
+    <div class="container">
+        <div class="row">
+            <div class="col col-lg-8 col-md-8">
+                @if (Model.korzyna != null)
+                {
+                @foreach (var item in Model.korzyna.Items)
+                {
+                    <div class="row item_korz ">
+
+                        <div class="col col-lg-4 col-md-4">
+                            <input type="checkbox" name="add[]" value="@item.Size.Id">
+                            <h6>@item.Size.Kind.Tovar.Name </h6>
+                            <h6>Ціна @item.Size.Kind.Tovar.Price грн.</h6>
+                        </div>
+                        <div class="col col-lg-4 col-md-4">
+                            <h6>Розмір @item.Size.Name </h6>
+                        </div>
+                        <div class="col col-lg-4 col-md-4">
+                            @foreach (var image in item.Size.Kind.Images)
+                            {
+                                <div class="mini_img">
+                                    <img src="@image.Path" alt="Sample Image" />
+
+                                </div>
+
+                                break;
+                            }
+                        </div>
+                    </div>
+
+                }}
+                else
+                {
+                    <h5>Корзина порожня</h5>
+                }
+            <div id="changeprise">
+                Всього до оплати - <input type="text" сlass="form-control" value="0" id="price1" />
+            </div>
+                <input type="button" id="btn1" value="Обрати" class="btn btn3" />
+            </div>
+                <div class="col col-lg-4 col-md-4 orderform dis"  id="orderform" >
+                    <form asp-action="addorder" asp-controller="user" >
+                        <h5>Оформити замовлення</h5>
+                        <div class="form-group">
+                            <label asp-for="order.Price" class="control-label">До оплати</label>
+                            <input type="text" asp-for="order.Price" class="form-control" value="0" id="price"  style=" pointer-events: none;"/>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="order.City" class="control-label">Місто</label>
+                            <input type="text" asp-for="order.City" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="order.address" class="control-label">Адреса</label>
+                            <input type="text" asp-for="order.address" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="order.postoffice" class="control-label">Поштовий індекс</label>
+                            <input type="text" asp-for="order.postoffice" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="order.datezam" class="control-label">Дата замовлення</label>
+                            <input type="text" asp-for="order.datezam" class="form-control" value="@DateTime.Now" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="order.Delivery" class="control-label">Доставка</label>
+                            <select asp-for="order.Delivery" class="form-control" asp-items="@(new SelectList(ViewBag.Delivery))"></select>
+
+                        </div>
+
+                        <input type="text" class="form-control" asp-for="items" id="item" value="" hidden />
+                        <div class="form-group row orderbtn" >
+                            <label asp-for="order.Card_num" class="control-label">Номер карти</label>
+                            <input type="text" asp-for="order.Card_num" class="form-control valid" aria-invalid="false" mask="9999-9999-9999-9999" />
+                            <label asp-for="order.Card_cvv" class="control-label col-lg-6 col-md-6">Cvv карти</label>
+                            <label asp-for="order.Card_date" class="control-label col-lg-6 col-md-6">Дійсна до</label>
+                            <input type="text" asp-for="order.Card_cvv" class="form-control valid col-lg-6 col-md-6"  aria-invalid="false" mask="999" />
+
+                            <input type="text" asp-for="order.Card_date" class="form-control valid col-lg-6 col-md-6"  aria-invalid="false" mask="99/99" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Замовити" class="btn btn-default btn2" />
+                        </div>
+
+                    </form>
+                    </div>
+            </div>
+
+           
+
+        </div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#orderform").prop('disabled', true);
+                    $('[mask]').each(function (e) {
+                        $(this).mask($(this).attr('mask'));
+                    });
+     
+
+            $('#btn1').bind('click', function () {
+                var $check = [];
+                $("input[type=checkbox]:checked").each(function () {
+                    $check.push($(this).attr("value"));
+                });
+                $('#item').attr('value', $check);
+                $('#price').attr('value', $('#price1').val());
+                $('#orderform').removeClass("dis");
+            });
+
+            $('input[type=checkbox]').change(function()
+        {
+                var $check = [];
+                $("input[type=checkbox]:checked").each(function () {
+                    $check.push($(this).attr("value"));
+                });
+               
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetPrise")',
+                traditional: true,
+                data: { 'mas': $check }   ,
+                success: function (data) {
+
+                    $('#changeprise').replaceWith(data);
+                }
+            });
+             
+        });
+
+            })
+
+
+
+
+
+    </script>
+}

@@ -1,0 +1,20 @@
+﻿@model IEnumerable<shop_proj.Models.Image>
+
+<div class="main" id="images">
+    <div id="carousel" class="slider">
+        @foreach (var image in Model)
+        {
+
+            <div data-thumb="@image.Path"><img src="@image.Path" alt=""></div>
+
+
+        }
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+
+

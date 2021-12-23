@@ -1,0 +1,40 @@
+﻿@model IEnumerable<shop_proj.Models.Tovar>
+
+
+<main class="content-wrapper " id="mainn">
+    <div class="container-fluid">
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+
+
+
+
+                <div class="col col-lg-4 col-md-3  tovar ml-1 mr-1">
+                    @foreach (var kind in item.Kinds)
+                    {
+
+                        @foreach (var image in kind.Images)
+                        {
+                            <div class="holder">
+                                <img src="@image.Path" alt="Sample Image" />
+                                <a asp-action="Tovarind" asp-controller="User" asp-route-id="@item.Id" class="block"><h6 class="txt1">Переглянути</h6></a>
+
+                            </div>
+                            break;
+
+                        }
+                        break;
+                    }
+                    <h6>@item.Name </h6>
+                    <h6> Ціна @item.Price грн.</h6>
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</main>

@@ -1,0 +1,80 @@
+﻿@model shop_proj.Models.Kind
+@{
+    ViewBag.Title = "Додавання нового кольору";
+}
+<h2>@ViewBag.Title</h2>
+<form asp-action="addkind" asp-controller="admin" enctype="multipart/form-data">
+    
+    <div class="form-group">
+        <label asp-for="TovarId" class="control-label">№ товару</label>
+        <input type="text" asp-for="TovarId" class="form-control" value="@ViewBag.Id" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Colour" class="control-label">Колір</label>
+        <input type="text" asp-for="Colour" class="form-control" />
+        <span asp-validation-for="Colour" style="color:red"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Розміри</label>
+
+        <table>
+            <tr>
+                <td>XXS</td>
+                <td>
+                    <input type="number" name="xxs" class="form-control" value="0" />
+                </td>
+            </tr>
+            <tr>
+                <td>XS</td>
+                <td>
+                    <input type="number" name="xs" class="form-control" value="0" />
+                </td>
+            </tr>
+            <tr>
+                <td>S</td>
+                <td>
+                    <input type="number" name="s" class="form-control" value="0" />
+                </td>
+            </tr>
+            <tr>
+                <td>M</td>
+                <td>
+                    <input type="number" name="m" class="form-control" value="0" />
+                </td>
+            </tr>
+            <tr>
+                <td>L</td>
+                <td>
+                    <input type="number" name="l" class="form-control" value="0" />
+                </td>
+            </tr>
+            <tr>
+                <td>XL</td>
+                <td>
+                    <input type="number" name="xl" class="form-control" value="0" />
+                </td>
+            </tr>
+            <tr>
+                <td>XXL</td>
+                <td>
+                    <input type="number" name="xxl" class="form-control" value="0" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <h3>Оберіть зображення</h3>
+    <input type="file" name="uploadedFiles" multiple="" /><br>
+
+    <div class="form-group">
+        <input type="submit" value="Додати" class="btn btn-default" />
+    </div>
+</form>
+@section scripts{
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+

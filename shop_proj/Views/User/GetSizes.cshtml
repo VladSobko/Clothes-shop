@@ -1,0 +1,14 @@
+﻿@model IEnumerable<shop_proj.Models.Size>
+
+<div id="sizes">
+    @if (Model != null)
+    {<h6>Наявні розміри</h6>
+        @foreach (var size in Model)
+        {
+
+            <input type="radio" value="@size.Id" id="size" name="size" />@size.Name
+
+
+        }}
+    else { <h6>Товару в наявності немає</h6>}
+</div>

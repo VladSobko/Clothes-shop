@@ -1,0 +1,67 @@
+﻿@model IEnumerable<shop_proj.Models.Order>
+@{
+    ViewBag.Title = "Історія замовлень";
+}
+<h4>@ViewBag.Title</h4>
+<div class="container">
+    <div class="row ">
+            @foreach (var order in Model)
+            {
+                string l = "order" + order.Id;
+                string l1 = "#order" + order.Id;
+                <div class="komans">
+               
+                <div class="row  ">
+
+                   
+                     <Button data-toggle="collapse" data-target=@l1 class="col col-lg-1 col-md-1 butkom ">+</Button>
+                    <h4>Замовлення №@order.Id</h4>
+                     <h6 class="col col-lg-11 col-md-11">@order.datezam - @order.Price</h6></div>
+                <div id=@l class="collapse col col-lg-12 col-md-12" style="padding-right:20px;">
+
+                    @foreach (var item in order.Items)
+                    {<div class="row item_korz ">
+
+                            <div class="col col-lg-4 col-md-4">
+                                <h6>@item.Size.Kind.Tovar.Name </h6>
+                                <h6>Ціна @item.Size.Kind.Tovar.Price грн.</h6>
+                            </div>
+                            <div class="col col-lg-4 col-md-4">
+                                <h6>Розмір @item.Size.Name </h6>
+                            </div>
+                            <div class="col col-lg-4 col-md-4">
+                                @foreach (var image in item.Size.Kind.Images)
+                                {
+                                    <div class="mini_img">
+                                        <img src="@image.Path" alt="Sample Image" />
+
+                                    </div>
+
+                                    break;
+                                }
+                            </div>
+                        </div>
+                   
+                    }
+                </div>
+              </div>
+             
+
+            }
+         
+        </div>
+    </div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+
+
+        })
+
+
+
+
+    </script>
+}

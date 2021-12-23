@@ -1,0 +1,21 @@
+﻿@model shop_proj.Models.Kind
+@{
+    ViewBag.Title = "Редагування ";
+}
+<h2>@ViewBag.Title</h2>
+<form asp-action="editkind" asp-controller="admin" asp-route-id="@Model.Id">
+
+    <div class="form-group">
+        <label asp-for="Colour" class="control-label">Колір</label>
+        <input type="text" asp-for="Colour" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="TovarId" class="control-label">Колір</label>
+        <input type="number" asp-for="TovarId" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Сохранить" class="btn btn-default" />
+    </div>
+
+</form>

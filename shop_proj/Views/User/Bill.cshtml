@@ -1,0 +1,48 @@
+﻿
+@model shop_proj.Models.Order
+@{
+    ViewBag.Title = "Рахунок";
+}
+
+<h4>@ViewBag.Title</h4>
+<div class="container">
+
+
+        <h3 style="display:block; text-align:center">Замовлення №@Model.Id</h3>
+        <h4>Дата замовлення-@Model.datezam</h4>
+        <div style="border-top:2px black solid">
+            <br />
+            <h4>Сплачено - @Model.Price грн.</h4>
+            <h4>Приблизний час доставки - @ViewBag.Date</h4>
+        </div>
+       <br><h5>Товари</h5><br/>
+        <div class="col col-lg-12 col-md-12" style="padding-right:20px;">
+
+            @foreach (var item in Model.Items)
+            {<div class="row item_korz ">
+
+                    <div class="col col-lg-4 col-md-4">
+                        <h6>@item.Size.Kind.Tovar.Name </h6>
+                        <h6>Ціна @item.Size.Kind.Tovar.Price грн.</h6>
+                    </div>
+                    <div class="col col-lg-4 col-md-4">
+                        <h6>Розмір @item.Size.Name </h6>
+                    </div>
+                    <div class="col col-lg-4 col-md-4">
+                        @foreach (var image in item.Size.Kind.Images)
+                        {
+                            <div class="mini_img">
+                                <img src="@image.Path" alt="Sample Image" />
+
+                            </div>
+
+                            break;
+                        }
+                    </div>
+                </div>
+
+            }
+        </div>
+    
+
+</div>

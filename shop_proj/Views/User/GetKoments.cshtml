@@ -1,0 +1,73 @@
+﻿@model shop_proj.Models.Tovar
+<div class="row" id="komm">
+    @foreach (var kom in Model.Komentars)
+    {
+        string t = "#demo" + kom.Id.ToString();
+        string t1 = "demo" + kom.Id.ToString();
+        string c = "ans" + kom.Id;
+        <div class="komans ">
+            <div class="row">
+                <Button data-toggle="collapse" data-target=@t class="col col-lg-1 col-md-1 butkom ">+</Button>
+                <h6 class="col col-lg-11 col-md-11">@kom.Text</h6>
+            </div>
+            <div id=@t1 class="collapse col col-lg-12 col-md-12" style="padding-right:20px;">
+                <div class="row">
+                    <div class="col col-lg-1 col-md-1  "></div>
+                    <input type="text" class=" col col-lg-9 col-md-9 input1" id=@c /> <input type="button" value="Відповісти" id=@kom.Id class="col col-lg-2 col-md-2 butkom2 addAns" />
+                </div>
+                <div id="answer" >
+                    @foreach (var ans in kom.Answers)
+                    {<div class="row ">
+                            <div class="col col-lg-1 col-md-1  " style="text-align:right;">-</div>
+
+                            <div class="col col-lg-10 col-md-10  ">@ans.Text</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  
+        <script type="text/javascript">
+        $(function () {
+
+
+
+
+            $('.addAns').bind('click', function () {
+                 var idr = $(this).attr("id");
+                 var text = "#ans" + idr;
+               var text1 = $(text).val();
+
+               var data = {
+                   UserId: "rr",
+                   KomentarId: parseInt(idr),
+                   Text: text1
+                 };
+                 alert(data.KomentarId);
+                  $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AddAnswer", "User")',
+                    data: JSON.stringify(data),
+                    //dataType: 'JSON',
+                    contentType: "application/json",
+                    success: function (data) {
+                        $('#answer').replaceWith(data);
+                    },
+                    error: function (passParams) {
+                        console.log("Error is " + passParams);
+                    }
+                })
+
+            })
+
+    })
+
+
+        </script>
+   
+
+</div>
