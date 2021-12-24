@@ -1,0 +1,16 @@
+﻿@model shop_proj.Models.Komentar
+<div id="answer">
+    @foreach (var ans in Model.Answers)
+    {<div class="row ">
+            <div class="col col-lg-1 col-md-1  " style="text-align:right;">-</div>
+
+            <div class="col col-lg-10 col-md-10  ">@ans.Text</div>
+        </div>
+    }
+    
+</div>
+        
+        
+    
+
+

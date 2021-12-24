@@ -1,0 +1,202 @@
+﻿@model shop_proj.Models.Tovar
+@{
+    ViewBag.Title = "";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col col-lg-6 col-md-6 ">
+            <div class="main" id="images">
+                <div id="carousel" class="slider">
+
+
+                    @foreach (var image in Model.Kinds[0].Images)
+                    {
+
+                        <div data-thumb="@image.Path"><img src="@image.Path" alt=""></div>
+
+
+                    }
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col col-lg-6 col-md-6 describe">
+
+            <h4>Бренд - @Model.Brend</h4>
+            <h4>Матеріал - @Model.Material</h4>
+            <h4>Опиc: <br />@Model.Name</h4>
+            <h4>Колір</h4>
+            @Html.DropDownList("Colour", ViewBag.Kinds as SelectList, new { id = "colour", @class = "form-control" })
+            <div id="sizes">
+                @if (Model.Kinds[0].Sizes != null)
+                {<h6>Наявні розміри</h6>
+                    @foreach (var size in Model.Kinds[0].Sizes)
+                    {
+
+                        <input type="radio" value="@size.Id" id="size" name="size" />@size.Name
+
+
+                    }}
+                else
+                { <h6>Товару в наявності немає</h6>}
+
+
+
+            </div>
+
+            <br /><h4>Ціна - @Model.Price</h4>
+            <div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <input type="button" id="btn1" value="Додати у корзину" class="btn form-control" />
+                }
+                else
+                { <a asp-action="Login" asp-controller="Account" class="form-control" style="max-width:155px;">Додати у корзину</a>}
+            </div>
+
+        </div>
+    </div>
+    <h4 class="">Коментарі</h4>
+    @if (User.Identity.IsAuthenticated)
+    {
+
+    <div class="row">
+        <input type="text" class="form-control col col-lg-10 col-md-10" id="kom" /> <input type="button" value="Додати" id="addKom" class="form-control col col-lg-2 col-md-2" />
+
+    </div>}
+    <div class="row" id="komm">
+        @foreach (var kom in Model.Komentars)
+        {
+            string t = "#demo" + kom.Id.ToString();
+            string t1 = "demo" + kom.Id.ToString();
+            string c = "ans" + kom.Id;
+            <div class="komans ">
+                <div class="row">
+                    <Button data-toggle="collapse" data-target=@t class="col col-lg-1 col-md-1 butkom ">+</Button>
+                    <h6 class="col col-lg-11 col-md-11">@kom.Text</h6>
+                </div>
+                <div id=@t1 class="collapse col col-lg-12 col-md-12" style="padding-right:20px;">
+                    <div class="row">
+                        <div class="col col-lg-1 col-md-1  "></div>
+                        <input type="text" class=" col col-lg-9 col-md-9 input1" id=@c /> <input type="button" value="Відповісти" id=@kom.Id class="col col-lg-2 col-md-2 butkom2 addAns" />
+                    </div>
+                    <div id="answer">
+                        @foreach (var ans in kom.Answers)
+                        {<div class="row ">
+                                <div class="col col-lg-1 col-md-1  " style="text-align:right;">-</div>
+
+                                <div class="col col-lg-10 col-md-10  ">@ans.Text</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+    @section scripts{
+        <script type="text/javascript">
+        $(function () {
+
+        $('#colour').change(function()
+        {
+            var id = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetImages")/' + id,
+                success: function (data) {
+
+                    $('#images').replaceWith(data);
+                }
+            });
+             $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetSizes")/' + id,
+                success: function (data) {
+
+                    $('#sizes').replaceWith(data);
+                }
+            });
+        });
+
+            $('#btn1').bind('click', function () {
+
+                var id = $("input[name=size]:checked").val();
+                if (id != null) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("Addkorzunaitem")/' + id,
+                        success: function (data) {
+
+                            alert("Товар додано до корзини" );
+                        }
+                    })
+                }
+                else {alert("Оберіть розмір")}
+            })
+
+
+            $('#addKom').bind('click', function () {
+
+               var text = $('#kom').val();
+               var tovar= @Model.Id;
+                
+               var data = {
+                   UserId: "rr",
+                   TovarId: tovar,
+                   Text: text
+               };
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AddKomentar", "User")',
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    success: function (data) {
+                        $('#komm').replaceWith(data);
+                    },
+                    error: function (passParams) {
+                        console.log("Error is " + passParams);
+                    }
+                })
+           })
+
+
+            $('.addAns').bind('click', function () {
+                 var idr = $(this).attr("id");
+                 var text = "#ans" + idr;
+               var text1 = $(text).val();
+               
+               var data = {
+                   UserId: "rr",
+                   KomentarId: parseInt(idr),
+                   Text: text1
+                 };
+                 alert(data.KomentarId);
+                  $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AddAnswer", "User")',
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    success: function (data) {
+                        $('#answer').replaceWith(data);
+                    },
+                    error: function (passParams) {
+                        console.log("Error is " + passParams);
+                    }
+                })
+
+            })
+
+    })
+
+
+        </script>
+    }

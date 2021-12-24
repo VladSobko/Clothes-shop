@@ -1,0 +1,31 @@
+﻿@model shop_proj.Models.Category
+@{
+    ViewBag.Title = "Категорія";
+}
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="editCategory" asp-controller="admin" asp-route-id="@Model.Id">
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Назва</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+   
+
+</form>
+<div>
+    <h3>Моделі</h3>
+    <table class="table" id="cl2">
+
+        @foreach (var item in Model.Modells)
+        {
+
+            <tr>
+                <td> @item.Name</td>
+
+                <td><a asp-action="editmodell" asp-controller="Admin" asp-route-id="@item.Id">Редагувати</a> </td>
+            </tr>
+}
+    </table>
+    <a asp-action="addmodell" asp-controller="Admin" asp-route-id="@Model.Id">Додати</a>
+</div>

@@ -1,0 +1,48 @@
+﻿@model shop_proj.Models.Tovar
+@{
+    ViewBag.Title = "Товар";
+}
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="tovarinf" asp-controller="admin" asp-route-id="@Model.Id">
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Назва</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ModellId" class="control-label">Модель</label>
+        <input type="number" asp-for="ModellId" class="form-control" />
+    </div>
+  
+    <div class="form-group">
+        <label asp-for="Material" class="control-label">Матеріал</label>
+        <input type="text" asp-for="Material" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Brend" class="control-label">Бренд</label>
+        <input type="text" asp-for="Brend" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Price" class="control-label">Ціна</label>
+        <input type="text" asp-for="Price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Зберегти" class="btn btn-default" />
+    </div>
+
+</form>
+<div><h3>Кольори</h3>
+    <table class="table" id="cl2">
+        
+        @foreach (var item in Model.Kinds)
+        {
+
+        <tr>
+            <td>  @item.Colour</td>
+            
+            <td><a asp-action="editkind" asp-controller="Admin" asp-route-id="@item.Id">Редагувати</a> </td>
+        </tr> }
+    </table>
+        <a asp-action="addkind" asp-controller="Admin" asp-route-id="@Model.Id">Додати</a>
+</div>

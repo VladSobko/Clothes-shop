@@ -1,0 +1,24 @@
+﻿@model shop_proj.VModels.Login
+
+<h2>Вхід на сайт</h2>
+<form method="post" asp-controller="Account" asp-action="Login"
+      asp-route-returnUrl="@Model.ReturnUrl">
+    <div asp-validation-summary="ModelOnly" style="color:red"></div>
+    <div>
+        <label asp-for="Email"></label><br />
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" style="color:red" ></span>
+    </div>
+    <div>
+        <label asp-for="Password"></label><br />
+        <input asp-for="Password" class="form-control"/>
+        <span asp-validation-for="Password"  style="color:red"></span>
+    </div>
+    <div>
+        <label asp-for="RememberMe"></label>   
+        <input asp-for="RememberMe" />
+    </div>
+    <div>
+        <input type="submit" value="Увійти" class="btn-dark btn"/>
+    </div>
+</form>

@@ -1,0 +1,53 @@
+﻿@model shop_proj.Models.Tovar
+@{
+    ViewBag.Title = "Додавання нового товару";
+}
+<h2>@ViewBag.Title</h2>
+<form asp-action="addtovar" asp-controller="admin" enctype="multipart/form-data">
+    <div class="form-group">
+
+        @Html.DropDownList("Sex", ViewBag.Sex as SelectList, new { id = "sex", @class = "form-control" })
+
+        <div id="categories">
+            @Html.DropDownList("Category", ViewBag.Category as SelectList, new { id = "category", @class = "form-control" })
+
+            <select asp-for="ModellId" id="modells" class="form-control" asp-items="@(new SelectList(ViewBag.Modell, "Id","Name"))"></select>
+
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="Brend" class="control-label">Бренд</label>
+        <input type="text" asp-for="Brend" class="form-control" />
+        <span asp-validation-for="Brend" style="color:red"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Material" class="control-label">Матеріал</label>
+        <input type="text" asp-for="Material" class="form-control" />
+        <span asp-validation-for="Material" style="color:red"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price" class="control-label">Ціна</label>
+        <input type="text" asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" style="color:red"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Опис</label>
+        <input type="text" asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" style="color:red"></span>
+    </div>
+
+
+    <div class="form-group">
+        <input type="submit" value="Додати" class="btn btn-default" />
+    </div>
+</form>
+@section scripts{
+    <script type="text/javascript">
+    $(function () {
+
+
+        
+    })
+    </script>}
